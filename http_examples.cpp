@@ -129,7 +129,14 @@ int main() {
   //Get example simulating heavy work in a separate thread
   server.resource["^/work$"]["GET"] = [](shared_ptr<HttpServer::Response> response, shared_ptr<HttpServer::Request> /*request*/) {
     thread work_thread([response] {
-      this_thread::sleep_for(chrono::seconds(5));
+      std::cout << "starting work" << std::endl;
+      for (int i = 0; i < 5; ++i) {
+        if (response->is_client_disconnected()) {
+          std::cout << "client has disconnect while waiting for response" << std::endl;
+          return;
+        }
+        this_thread::sleep_for(chrono::seconds(1));
+      }
       response->write("Work done");
     });
     work_thread.detach();

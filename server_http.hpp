@@ -75,6 +75,14 @@ namespace SimpleWeb {
       }
 
     public:
+      void client_disconnected() {
+        client_has_disconnected = true;
+      }
+
+      bool is_client_disconnected() {
+        return !socket->is_open() || client_has_disconnected;
+      }
+
       size_t size() {
         return streambuf.size();
       }
@@ -129,6 +137,9 @@ namespace SimpleWeb {
       /// This is useful when implementing a HTTP/1.0-server sending content
       /// without specifying the content length.
       bool close_connection_after_response = false;
+
+      // True if client has disconnected
+      bool client_has_disconnected = false;
     };
 
     class Content : public std::istream {
@@ -446,6 +457,7 @@ namespace SimpleWeb {
 
       auto response = std::shared_ptr<Response>(new Response(socket), [this, request, timer](Response *response_ptr) {
         auto response = std::shared_ptr<Response>(response_ptr);
+        response->socket->cancel();
         this->send(response, [this, response, request, timer](const error_code &ec) {
           if(timer)
             timer->cancel();
@@ -470,6 +482,15 @@ namespace SimpleWeb {
             on_error(request, ec);
         });
       });
+
+      // monitor for client disconnect
+      asio::streambuf monitorbuf;
+      std::weak_ptr<Response> monitored(response);
+      async_read(*socket, monitorbuf, [monitored](const error_code &ec, size_t /*bytes_transferred*/) {
+          if ((boost::asio::error::eof == ec) || (boost::asio::error::connection_reset == ec))
+            if (auto spt = monitored.lock())
+              spt->client_disconnected();
+        });
 
       try {
         resource_function(response, request);
