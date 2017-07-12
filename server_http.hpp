@@ -484,9 +484,8 @@ namespace SimpleWeb {
       });
 
       // monitor for client disconnect
-      asio::streambuf monitorbuf;
       std::weak_ptr<Response> monitored(response);
-      async_read(*socket, monitorbuf, [monitored](const error_code &ec, size_t /*bytes_transferred*/) {
+      async_read(*socket, request->streambuf, [monitored](const error_code &ec, size_t /*bytes_transferred*/) {
           if ((boost::asio::error::eof == ec) || (boost::asio::error::connection_reset == ec))
             if (auto spt = monitored.lock())
               spt->client_disconnected();
