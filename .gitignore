@@ -16,3 +16,5 @@ https_examples
 io_test
 parse_test
 crypto_test
+
+.fake
