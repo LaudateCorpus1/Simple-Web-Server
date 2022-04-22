@@ -71,6 +71,7 @@ namespace SimpleWeb {
     client_error_too_many_requests = 429,
     client_error_request_header_fields_too_large = 431,
     client_error_unavailable_for_legal_reasons = 451,
+    client_close_request = 499,
     server_error_internal_server_error = 500,
     server_error_not_implemented = 501,
     server_error_bad_gateway = 502,
@@ -82,6 +83,7 @@ namespace SimpleWeb {
     server_error_loop_detected = 508,
     server_error_not_extended = 510,
     server_error_network_authentication_required = 511,
+    server_error_network_connect_timeout_error = 599,
   };
 
   inline const static std::vector<std::pair<StatusCode, std::string>> &status_codes() {
@@ -90,7 +92,7 @@ namespace SimpleWeb {
         {StatusCode::information_continue, "100 Continue"},
         {StatusCode::information_switching_protocols, "101 Switching Protocols"},
         {StatusCode::information_processing, "102 Processing"},
-        {StatusCode::information_early_hints, "Early Hints"},
+        {StatusCode::information_early_hints, "103 Early Hints"},
         {StatusCode::success_ok, "200 OK"},
         {StatusCode::success_created, "201 Created"},
         {StatusCode::success_accepted, "202 Accepted"},
@@ -138,6 +140,7 @@ namespace SimpleWeb {
         {StatusCode::client_error_too_many_requests, "429 Too Many Requests"},
         {StatusCode::client_error_request_header_fields_too_large, "431 Request Header Fields Too Large"},
         {StatusCode::client_error_unavailable_for_legal_reasons, "451 Unavailable For Legal Reasons"},
+        {StatusCode::client_close_request, "499 Client Closed Request"},
         {StatusCode::server_error_internal_server_error, "500 Internal Server Error"},
         {StatusCode::server_error_not_implemented, "501 Not Implemented"},
         {StatusCode::server_error_bad_gateway, "502 Bad Gateway"},
@@ -148,7 +151,8 @@ namespace SimpleWeb {
         {StatusCode::server_error_insufficient_storage, "507 Insufficient Storage"},
         {StatusCode::server_error_loop_detected, "508 Loop Detected"},
         {StatusCode::server_error_not_extended, "510 Not Extended"},
-        {StatusCode::server_error_network_authentication_required, "511 Network Authentication Required"}};
+        {StatusCode::server_error_network_authentication_required, "511 Network Authentication Required"}
+        {StatusCode::server_error_network_connect_timeout_error, "599 Network Connect Timeout Error"}};
     return status_codes;
   }
 
