@@ -4,8 +4,11 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "$\\Users\\santi\\Documents\\Simple-Web-Server"
-            ],
+                "$C:\\Users\\santi\\Documents\\Simple-Web-Server"
+                "${workspaceFolder}/.vscode/**",
+                "${workspaceFolder}/test/**",
+                "${workspaceFolder}/web/**"
+                ],
             "defines": [
                 "_DEBUG",
                 "UNICODE",
