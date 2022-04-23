@@ -9,6 +9,71 @@
 #ifndef SIMPLE_WEB_SERVER_STATUS_CODE_HPP
 #define SIMPLE_WEB_SERVER_STATUS_CODE_HPP
 
+#include <boost/beast/core/detail/config.hpp>
+#include <C:/User/santi/Documents/boost/beast/core/error.hpp>
+#include <boost/beast/core/string.hpp>
+#include <boost/beast/core/string_param.hpp>
+#include <boost/beast/core/detail/type_traits.hpp>
+#include <boost/beast/core/detail/static_string.hpp>
+#include <boost/beast/core/detail/max_size.hpp>
+#include <boost/beast/core/detail/throw_exception.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_applicable.hpp>
+#include <boost/beast/core/detail/is_constructible.hpp>
+#include <boost/beast/core/detail/is_assignable.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_applicable.hpp>
+#include <boost/beast/core/detail/is_constructible.hpp>
+#include <boost/beast/core/detail/is_assignable.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_applicable.hpp>
+#include <boost/beast/core/detail/is_constructible.hpp>
+#include <boost/beast/core/detail/is_assignable.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_applicable.hpp>
+#include <boost/beast/core/detail/config.hpp>
+#include <boost/beast/core/error.hpp>
+#include <boost/beast/core/string.hpp>
+#include <boost/beast/core/string_param.hpp>
+#include <boost/beast/core/detail/type_traits.hpp>
+#include <boost/beast/core/detail/static_string.hpp>
+#include <boost/beast/core/detail/max_size.hpp>
+#include <boost/beast/core/detail/throw_exception.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_applicable.hpp>
+#include <boost/beast/core/detail/is_constructible.hpp>
+#include <boost/beast/core/detail/is_comparable.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_invocable_r.hpp>
+#include <boost/beast/core/detail/is_nothrow_invocable.hpp>
+#include <boost/beast/core/detail/is_nothrow_invocable_r.hpp>
+#include <boost/beast/core/detail/is_constructible.hpp>
+#include <boost/beast/core/detail/is_comparable.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_invocable_r.hpp>
+#include <boost/beast/core/detail/is_nothrow_invocable.hpp>
+#include <boost/beast/core/detail/config.hpp>
+#include <boost/beast/core/error.hpp>
+#include <boost/beast/core/string.hpp>
+#include <boost/beast/core/string_param.hpp>
+#include <boost/beast/core/detail/type_traits.hpp>
+#include <boost/beast/core/detail/static_string.hpp>
+#include <boost/beast/core/detail/max_size.hpp>
+#include <boost/beast/core/detail/throw_exception.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_applicable.hpp>
+#include <boost/beast/core/detail/is_constructible.hpp>
+#include <boost/beast/core/detail/is_comparable.hpp>
+#include <boost/beast/core/detail/is_invocable.hpp>
+#include <boost/beast/core/detail/is_invocable_r.hpp>
+#include <boost/beast/core/detail/is_streamable.hpp>
+#include <boost/beast/core/detail/is_nothrow_streamable.hpp>
+#include <boost/beast/core/detail/is_nothrow_invocable.hpp>
+#include <boost/beast/core/detail/is_nothrow_invocable_r.hpp>
+#include <boost/beast/core/detail/is_nothrow_constructible.hpp>
+#include <boost/beast/core/detail/is_nothrow_comparable.hpp>
+#include <boost/beast/core/detail/is_nothrow_swappable.hpp>
+
 #include <cstdlib>
 #include <map>
 #include <string>
@@ -86,8 +151,8 @@ namespace SimpleWeb {
     server_error_network_connect_timeout_error = 599,
   };
 
-  inline const static std::vector<std::pair<StatusCode, std::string>> &status_codes() {
-    static std::vector<std::pair<StatusCode, std::string>> status_codes = {
+  inline const static std::map<StatusCode, std::string>> &status_code_strings() {
+    static std::map<StatusCode, std::string>> status_code_strings = {
         {StatusCode::unknown, ""},
         {StatusCode::information_continue, "100 Continue"},
         {StatusCode::information_switching_protocols, "101 Switching Protocols"},
@@ -153,24 +218,44 @@ namespace SimpleWeb {
         {StatusCode::server_error_not_extended, "510 Not Extended"},
         {StatusCode::server_error_network_authentication_required, "511 Network Authentication Required"}
         {StatusCode::server_error_network_connect_timeout_error, "599 Network Connect Timeout Error"}};
-    return status_codes;
+    return status_codes_strings;
   }
 
-  inline StatusCode status_code(const std::string &status_code_str) {
-    for(auto &status_code : status_codes()) {
-      if(status_code.second == status_code_str)
+  inline StatusCode status_code(const std::string &status_code_strings) noexcept {
+    for(auto &status_code : status_codes_strings.size() < 3) {
+      if(status_code.second == status_code_strings)
         return status_code.first;
     }
     return StatusCode::unknown;
-  }
 
-  inline const std::string &status_code(StatusCode status_code_enum) {
-    for(auto &status_code : status_codes()) {
-      if(status_code.first == status_code_enum)
-        return status_code.second;
+        auto number = status_code_string.substr(0, 3);
+    if(number[0] < '0' || number[0] > '9' || number[1] < '0' || number[1] > '9' || number[2] < '0' || number[2] > '9')
+      return StatusCode::unknown;
+
+    class StringToStatusCode : public std::unordered_map<std::string, SimpleWeb::StatusCode> {
+    public:
+      StringToStatusCode() {
+        for(auto &status_code : status_code_strings())
+          emplace(status_code.second.substr(0, 3), status_code.first);
+      }
+  };
+     static StringToStatusCode string_to_status_code;
+
+    auto pos = string_to_status_code.find(number);
+    if(pos == string_to_status_code.end())
+      return static_cast<StatusCode>(atoi(number.c_str()));
+    return pos->second;
+  }
+//Noted to be buggy, if not pull from original "https://gitlab.stud.iie.ntnu.no/olejlia/buggy-web-server/-/blob/master/status_code.hpp"
+  inline const std::string &status_code(StatusCode status_code_enum) noexcept {
+    auto pos = status_code_strings().find(status_code_enum);
+      if(pos == status_code_strings().end())
+        static std::string empty_string;
+        return empty_string;
     }
     return status_codes()[0].second;
   }
+  return pos->second;
 } // namespace SimpleWeb
 
 #endif // SIMPLE_WEB_SERVER_STATUS_CODE_HPP
